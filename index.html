@@ -8,6 +8,7 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.3.0/math.min.js" integrity="sha512-2Ckw3zmQU6j6oTB5XbhSnQYyRqPDoYKMTVbTllvPKi9Pg1+2V5tV8UXhpn9eGSWU/FHzCHl+t+AJJhFCxOs5Og==" crossorigin="anonymous"></script>
     <title>Hello, world!</title>
   </head>
   <body>
@@ -70,7 +71,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.3.0/math.min.js" integrity="sha512-2Ckw3zmQU6j6oTB5XbhSnQYyRqPDoYKMTVbTllvPKi9Pg1+2V5tV8UXhpn9eGSWU/FHzCHl+t+AJJhFCxOs5Og==" crossorigin="anonymous"></script>
     <script>
       $( "#pizza" ).submit(function( event ) {
           $("#tot_list").empty();
@@ -82,11 +82,19 @@
           var tot_h2o=105*npizzas;
           var tot_lievito=0.5*npizzas;
           var tot_sale=1.5*npizzas;
-          $( "#tot_list" ).append( "<li class=\"list-group-item\">Farina: "+tot_farina+" g</li>" );
+          var num_farine=$("#num_farine").val();
+          if(num_farine > 1){
+            for(i=1;i<=num_farine;i++){
+              var nome_farina=$('#farina'+i).val();
+              var fraction_farina=math.fraction($('#frac_farina'+i).val());
+                $( "#tot_list" ).append( "<li class=\"list-group-item\">"+nome_farina+": "+tot_farina*fraction_farina+" g</li>" );
+            }  
+          }else{
+            $( "#tot_list" ).append( "<li class=\"list-group-item\">Farina: "+tot_farina+" g</li>" );
+          }
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+tot_h2o+" g</li>" );
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Lievito essiccato: "+tot_lievito+" g</li>" );
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Sale: "+tot_sale+" cucchiaini</li>" );
-          
           event.preventDefault();
       });
 
@@ -94,7 +102,7 @@
           $('#div_farine').empty();
           if($("#num_farine").val() >1){
             for(i = 1; i <= $("#num_farine").val(); i++){
-            var row_farina="<div class=\"row\"><div class=\"col\"><input type=\"text\" class=\"form-control\" placeholder=\"Nome Farina "+i+"\"></div><div class=\"col\"><input type=\"text\" class=\"form-control\" placeholder=\"Proporzione Farina 1 (ex. 1/3)\"></div></div>";
+            var row_farina="<div class=\"row\"><div class=\"col\"><input type=\"text\" class=\"form-control\" placeholder=\"Nome Farina "+i+"\" id=\"farina"+i+"\"></div><div class=\"col\"><input type=\"text\" class=\"form-control\" placeholder=\"Proporzione Farina (ex. 1/3)\" id=\"frac_farina"+i+"\"></div></div>";
             $('#div_farine').append(row_farina);
             }
           }
