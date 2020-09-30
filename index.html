@@ -53,13 +53,39 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm">
+        <div class="col-sm-4">
           
           <div class="card mt-4" style="display:none;" id="dosibox">
             <div class="card-body">
               <h5 class="card-title">Totale ingredienti</h5>
             
             <ul class="list-group list-group-flush" id="tot_list">
+            </ul>
+            </div>
+            
+          </div>
+          
+        </div>
+        <div class="col-sm-4">
+          
+          <div class="card mt-4" style="display:none;" id="bigabox">
+            <div class="card-body">
+              <h5 class="card-title">Ingredienti Biga</h5>
+            
+            <ul class="list-group list-group-flush" id="biga_tot_list">
+            </ul>
+            </div>
+            
+          </div>
+          
+        </div>
+        <div class="col-sm-4">
+          
+          <div class="card mt-4" style="display:none;" id="fase2box">
+            <div class="card-body">
+              <h5 class="card-title">Secondo Impasto</h5>
+            
+            <ul class="list-group list-group-flush" id="fase2_tot_list">
             </ul>
             </div>
             
@@ -78,38 +104,59 @@
       $( "#pizza" ).submit(function( event ) {
           $("#tot_list").empty();
           $("#dosibox").show();
+          $("#biga_tot_list").empty();
+          $("#bigabox").show();
+          $("#fase2_tot_list").empty();
+          $("#fase2box").show();
           console.log( "Handler for .submit() called." );
           var npizzas=$('#npizzas').val();
           $('#npizza_text').text(npizzas);
+         
           var tot_farina=150*npizzas;
           var tot_h2o=105*npizzas;
           var tot_lievito=0.5*npizzas;
           var tot_sale=1.5*npizzas;
           var num_farine=$("#num_farine").val();
+          
+          var nomi_farine = ['Farina'];
+          var fraction_farina = [1];
+          var tot_fraction = 1;
           if(num_farine > 1){
-            var tot_fraction =0;
-            for(i=1;i<=num_farine;i++){
-              var nome_farina=$('#farina'+i).val();
-              var fraction_farina=math.fraction($('#frac_farina'+i).val());
-              tot_fraction+=fraction_farina;
-                $( "#tot_list" ).append( "<li class=\"list-group-item\">"+nome_farina+": "+tot_farina*fraction_farina+" g</li>" );
+            tot_fraction = 0;
+            nomi_farine =[];
+            fraction_farina=[];
+            for(i=0;i<num_farine;i++){
+              nomi_farine.push($('#farina'+i).val());
+              fraction_farina.push(math.fraction($('#frac_farina'+i).val()));
+              tot_fraction+=fraction_farina[i];
             }
-            if(tot_fraction !=1){
+          }
+          
+          if(tot_fraction !=1){
               alert('Le proporzioni non sommano a 1');
             }
-          }else{
-            $( "#tot_list" ).append( "<li class=\"list-group-item\">Farina: "+tot_farina+" g</li>" );
+          
+          for(i=0;i<num_farine;i++){
+            $( "#tot_list" ).append( "<li class=\"list-group-item\">"+nomi_farine[i]+": "+math.round(tot_farina*fraction_farina[i])+" g</li>" );
+            $( "#biga_tot_list" ).append( "<li class=\"list-group-item\">"+nomi_farine[i]+": "+math.round(35*npizzas*fraction_farina[i])+" g</li>" );
+            $( "#fase2_tot_list" ).append( "<li class=\"list-group-item\">"+nomi_farine[i]+": "+math.round(115*npizzas*fraction_farina[i])+" g</li>" );
           }
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+tot_h2o+" g</li>" );
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Lievito essiccato: "+tot_lievito+" g</li>" );
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Sale: "+tot_sale+" cucchiaini</li>" );
+        
+          $( "#biga_tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+15*npizzas+" g</li>" );
+          $( "#biga_tot_list" ).append( "<li class=\"list-group-item\">Lievito essiccato: "+tot_lievito+" g</li>" );
+        
+          $( "#fase2_tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+90*npizzas+" g</li>" );
+          $( "#fase2_tot_list" ).append( "<li class=\"list-group-item\">Sale: "+tot_sale+" cucchiaini</li>" );
           event.preventDefault();
       });
 
       $( "#num_farine" ).change(function() {
           $('#div_farine').empty();
           if($("#num_farine").val() >1){
-            for(i = 1; i <= $("#num_farine").val(); i++){
+            for(i = 0; i < $("#num_farine").val(); i++){
             var row_farina="<div class=\"row mb-2\"><div class=\"col\"><input type=\"text\" required=\"required\" class=\"form-control\" placeholder=\"Nome Farina "+i+"\" id=\"farina"+i+"\"></div><div class=\"col\"><input type=\"text\" class=\"form-control\" required=\"required\" pattern=\"\\d{1}/\\d{1}\" oninvalid=\"this.setCustomValidity(\'Inserire frazione ex. 1/2\')\" oninput=\"this.setCustomValidity(\'\')\" placeholder=\"Proporzione (ex. 1/3)\" id=\"frac_farina"+i+"\"></div></div>";
             $('#div_farine').append(row_farina);
             }
