@@ -10,6 +10,11 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/7.3.0/math.min.js" integrity="sha512-2Ckw3zmQU6j6oTB5XbhSnQYyRqPDoYKMTVbTllvPKi9Pg1+2V5tV8UXhpn9eGSWU/FHzCHl+t+AJJhFCxOs5Og==" crossorigin="anonymous"></script>
     <title>Hello, world!</title>
+    <style>
+      li { background: green; }
+      li:nth-child(odd) { background: #f1f1f1; }
+      li:nth-child(even) { background: white; }
+    </style>
   </head>
   <body>
     <div class="container-sm">
@@ -62,36 +67,73 @@
             <ul class="list-group list-group-flush" id="tot_list">
             </ul>
             </div>
-            
+            <div class="card-footer text-muted">
+              (*) 1g lievito essiccato = c.a. 1/4 cucchiaino di caffè
+            </div>
           </div>
           
         </div>
-        <div class="col-sm-4">
+        
+        <div class="col-sm-4" id="BigaBoxCol">
           
           <div class="card mt-4" style="display:none;" id="bigabox">
             <div class="card-body">
               <h5 class="card-title">Ingredienti Biga</h5>
+            </div>
             
             <ul class="list-group list-group-flush" id="biga_tot_list">
             </ul>
+            <div class="collapse card-body" id="ProcedimentoBigaText">
+              <div class="card-text">
+                Uno o due giorni prima preparare l'impasto "biga" come segue:
+                <ul class="list-group list-group-flush mt-3">
+                  <li class="list-group-item">In una ciotola mescolare il lievito e la farina</li>
+                  <li class="list-group-item">Aggiungere l'acqua e impastare per un minuto, proprio il minimo che serve per per far amalgamare il tutto. L'impasto verra' duretto, è giusto cosi'.
+                  </li>
+                  <li class="list-group-item">Coprire con una plastica e lasciare a temperatura ambiente (idealmente 20 gradi) per 16 ore circa</li>
+                </ul> 
+
+              </div>
             </div>
+            <div class="card-body">
+            <a class="btn btn-primary" data-toggle="collapse" href="#ProcedimentoBigaText" role="button" aria-expanded="false" aria-controls="collapseExample" id ="ProcedimentoBigaBtn">Procedimento</a>
+            </div>
+            
             
           </div>
           
         </div>
-        <div class="col-sm-4">
-          
+        
+        <div class="col-sm-4" id="Fase2BoxCol">
           <div class="card mt-4" style="display:none;" id="fase2box">
             <div class="card-body">
-              <h5 class="card-title">Secondo Impasto</h5>
+              <h5 class="card-title">Impasto Finale</h5>
+            </div>
             
             <ul class="list-group list-group-flush" id="fase2_tot_list">
             </ul>
+            <div class="collapse card-body" id="Procedimento2Text">
+              <div class="card-text">
+                Finita la lievitazione della biga:
+                <ul class="list-group list-group-flush mt-3">
+                  <li class="list-group-item">Spezzettare la biga lievitata in 6-7 pezzetti e metterli in una ciotola assieme ad un po' dell'acqua e lasciarla ammorbidire per 10 minuti</li>
+                  <li class="list-group-item">Aggiungere il resto della farina, l'acqua e impastare per amalgamare bene.</li>
+                  <li class="list-group-item">Attendere 30-40 minuti</li>
+                  <li class="list-group-item">Fare 3-5 giri di pieghe a intervalli di 15 minuti.</li>
+                  <li class="list-group-item">Verso la fine aggiungere il sale disciolto in pochissima acqua, e fare un ultimo giro di pieghe.</li>
+                  <li class="list-group-item">Coprire con una plastica o pellicola e mettere in frigo per 1 giorno o anche 2 (il gusto migliorerà)</li>
+                  
+                </ul>
+
+              </div>
             </div>
-            
+            <div class="card-body">
+            <a class="btn btn-primary" data-toggle="collapse" href="#Procedimento2Text" role="button" aria-expanded="false" aria-controls="collapseExample" id ="Procedimento2Btn">Procedimento</a>
+            </div>
           </div>
           
         </div>
+        
       </div>
     </div>
 
@@ -142,7 +184,7 @@
             $( "#fase2_tot_list" ).append( "<li class=\"list-group-item\">"+nomi_farine[i]+": "+math.round(115*npizzas*fraction_farina[i])+" g</li>" );
           }
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+tot_h2o+" g</li>" );
-          $( "#tot_list" ).append( "<li class=\"list-group-item\">Lievito essiccato: "+tot_lievito+" g</li>" );
+          $( "#tot_list" ).append( "<li class=\"list-group-item\">Lievito essiccato: "+tot_lievito+" g (*)</li>" );
           $( "#tot_list" ).append( "<li class=\"list-group-item\">Sale: "+tot_sale+" cucchiaini</li>" );
         
           $( "#biga_tot_list" ).append( "<li class=\"list-group-item\">Acqua: "+15*npizzas+" g</li>" );
@@ -163,6 +205,14 @@
           }
           
 
+      });
+      $( "#ProcedimentoBigaBtn" ).click(function() {
+        $("#BigaBoxCol").toggleClass( "col-sm-12" );
+        $("#BigaBoxCol").toggleClass( "order-first" );
+      });
+      $( "#Procedimento2Btn" ).click(function() {
+        $("#Fase2BoxCol").toggleClass( "col-sm-12" );
+        $("#Fase2BoxCol").toggleClass( "order-first" );
       });
     </script>
   
