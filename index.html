@@ -15,44 +15,47 @@
     <div class="container-sm">
       <div class="row">
         <div class="col-sm">
-      
-          <form id="pizza">
+          <div class="card mt-4">
+              <div class="card-body">
+                  <form id="pizza">
 
 
-            <div class="form-group">
-              <label for="npizzas">Numero di pizze</label>
-              <select class="form-control" id="npizzas">
-                <script>
-                container = document.getElementById('npizzas');
-                for(i = 1; i <= 10; i++){
-                  container.innerHTML+='<option value=\"'+i+'\">'+i+'</option>';
-                }
-                </script>
-              </select>
-            </div>
+                    <div class="form-group">
+                      <label for="npizzas">Numero di pizze</label>
+                      <select class="form-control" id="npizzas">
+                        <script>
+                        container = document.getElementById('npizzas');
+                        for(i = 1; i <= 10; i++){
+                          container.innerHTML+='<option value=\"'+i+'\">'+i+'</option>';
+                        }
+                        </script>
+                      </select>
+                    </div>
 
 
-            <div class="form-group">
-              <label for="num_farine">Numero di differenti farine</label>
-              <select class="form-control" id="num_farine">
-                <option value="1" selected>1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-              </select>
-            </div>
+                    <div class="form-group">
+                      <label for="num_farine">Numero di differenti farine</label>
+                      <select class="form-control" id="num_farine">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                      </select>
+                    </div>
 
-            <div id="div_farine"> 
-            
-            </div>
+                    <div id="div_farine"> 
+                    
+                    </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                  </form>
+              </div>
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col-sm">
           
-          <div class="card" style="width: 18rem;display:none;" id="dosibox">
+          <div class="card mt-4" style="display:none;" id="dosibox">
             <div class="card-body">
               <h5 class="card-title">Totale ingredienti</h5>
             
@@ -84,11 +87,16 @@
           var tot_sale=1.5*npizzas;
           var num_farine=$("#num_farine").val();
           if(num_farine > 1){
+            var tot_fraction =0;
             for(i=1;i<=num_farine;i++){
               var nome_farina=$('#farina'+i).val();
               var fraction_farina=math.fraction($('#frac_farina'+i).val());
+              tot_fraction+=fraction_farina;
                 $( "#tot_list" ).append( "<li class=\"list-group-item\">"+nome_farina+": "+tot_farina*fraction_farina+" g</li>" );
-            }  
+            }
+            if(tot_fraction !=1){
+              alert('Le proporzioni non sommano a 1');
+            }
           }else{
             $( "#tot_list" ).append( "<li class=\"list-group-item\">Farina: "+tot_farina+" g</li>" );
           }
